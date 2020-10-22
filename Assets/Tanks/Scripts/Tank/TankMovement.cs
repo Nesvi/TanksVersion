@@ -20,6 +20,8 @@ namespace Complete
         private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] m_particleSystems; // References to all the particles systems used by the Tanks
 
+        private bool isJoystick;
+
         private void Awake ()
         {
             m_Rigidbody = GetComponent<Rigidbody> ();
@@ -61,9 +63,11 @@ namespace Complete
 
         private void Start ()
         {
-            // The axes names are based on player number.
-            m_MovementAxisName = "Vertical" + m_PlayerNumber;
-            m_TurnAxisName = "Horizontal" + m_PlayerNumber;
+            isJoystick = (m_PlayerNumber == 1 && Input.GetJoystickNames().Length >= 1) ||
+                         (m_PlayerNumber == 2 && Input.GetJoystickNames().Length >= 2);
+
+            m_MovementAxisName = "Vertical" + m_PlayerNumber + (isJoystick ? "Joystick" : "");
+            m_TurnAxisName = "Horizontal" + m_PlayerNumber + (isJoystick ? "Joystick" : "");
 
             // Store the original pitch of the audio source.
             m_OriginalPitch = m_MovementAudio.pitch;
@@ -72,13 +76,37 @@ namespace Complete
 
         private void Update ()
         {
-            // Store the value of both input axes.
-            m_MovementInputValue = Input.GetAxis (m_MovementAxisName);
-            m_TurnInputValue = Input.GetAxis (m_TurnAxisName);
+            ManageInput();
 
             EngineAudio ();
         }
 
+        private void ManageInput()
+        {
+
+            if (isJoystick)
+            {
+                m_MovementInputValue = ProcessAxis(m_MovementAxisName, m_MovementInputValue, 3.0f, 6.0f);
+                m_TurnInputValue = ProcessAxis(m_TurnAxisName, m_TurnInputValue, 5.0f, 8.0f);
+            }
+            else
+            {
+                // Store the value of both input axes.
+                m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+                m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
+            }
+        }
+
+        public float ProcessAxis(string axisName, float lastAxisValue, float normalAcceleration, float brakeAcceleration)
+        {
+            float rawAxis = Input.GetAxis(axisName);
+
+            float targetValue = rawAxis > 0.2f ? 1.0f : rawAxis < -0.2f ? -1.0f : 0.0f;            
+            bool isBraking = targetValue == 0.0f;
+            float movementAcceleration = isBraking ? brakeAcceleration : normalAcceleration;
+
+            return Mathf.Lerp(lastAxisValue, targetValue, Time.deltaTime * movementAcceleration);
+        }
 
         private void EngineAudio ()
         {
@@ -114,7 +142,6 @@ namespace Complete
             Move ();
             Turn ();
         }
-
 
         private void Move ()
         {
