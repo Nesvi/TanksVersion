@@ -12,11 +12,15 @@ namespace Complete
         public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
 		public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
 
-        private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
-        private string m_TurnAxisName;              // The name of the input axis for turning.
-        private Rigidbody m_Rigidbody;              // Reference used to move the tank.
-        private float m_MovementInputValue;         // The current value of the movement input.
-        private float m_TurnInputValue;             // The current value of the turn input.
+        public bool isAI;
+        [HideInInspector]
+        public TankAI m_TankAI;
+
+        protected string m_MovementAxisName;          // The name of the input axis for moving forward and back.
+        protected string m_TurnAxisName;              // The name of the input axis for turning.
+        protected Rigidbody m_Rigidbody;              // Reference used to move the tank.
+        protected float m_MovementInputValue;         // The current value of the movement input.
+        protected float m_TurnInputValue;             // The current value of the turn input.
         private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] m_particleSystems; // References to all the particles systems used by the Tanks
 
@@ -76,14 +80,27 @@ namespace Complete
 
         private void Update ()
         {
-            ManageInput();
+            if (isAI)
+            {
+                AI();
+            }
+            else
+            {
+                ManageInput();
+            }
 
             EngineAudio ();
         }
 
-        private void ManageInput()
+        private void AI()
         {
 
+            m_MovementInputValue = ProcessAxis(m_TankAI.m_MovementInputValue, m_MovementInputValue, 3.0f, 6.0f);
+            m_TurnInputValue = ProcessAxis(m_TankAI.m_TurnInputValue, m_TurnInputValue, 5.0f, 8.0f);
+        }
+
+        private void ManageInput()
+        {
             if (isJoystick)
             {
                 m_MovementInputValue = ProcessAxis(m_MovementAxisName, m_MovementInputValue, 3.0f, 6.0f);
@@ -97,11 +114,15 @@ namespace Complete
             }
         }
 
-        public float ProcessAxis(string axisName, float lastAxisValue, float normalAcceleration, float brakeAcceleration)
+        private float ProcessAxis(string axisName, float lastAxisValue, float normalAcceleration, float brakeAcceleration)
         {
             float rawAxis = Input.GetAxis(axisName);
+            return ProcessAxis(rawAxis, lastAxisValue, normalAcceleration, brakeAcceleration);
+        }
 
-            float targetValue = rawAxis > 0.2f ? 1.0f : rawAxis < -0.2f ? -1.0f : 0.0f;            
+        private float ProcessAxis(float rawAxis, float lastAxisValue, float normalAcceleration, float brakeAcceleration)
+        {
+            float targetValue = rawAxis > 0.2f ? 1.0f : rawAxis < -0.2f ? -1.0f : 0.0f;
             bool isBraking = targetValue == 0.0f;
             float movementAcceleration = isBraking ? brakeAcceleration : normalAcceleration;
 
