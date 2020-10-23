@@ -1,0 +1,17 @@
+-----------------------------------------------------------------------------------------------
+-Oil path that you can burn
+-Tentacles that emerge from the ground and attack nearby tanks
+-Teleporting into other location randomly
+-Throwing a jail ball that makes the tank slower
+-Tie the tank to one stick with a rope or chain
+-Building a wall in the path of the tank
+-Jump forward
+-Reflect shoots
+-Rotating shields that rotate around the tank ***
+-Dashing
+-A ball that explodes later and makes it feel like rocket league for a few seconds
+-A barrier that makes you bounce like pinball barriers** 
+-Surround the tank with a barrier that way the other player can't escape for a few seconds
+-Glue
+-Wall in front of the tank
+-----------------------------------------------------------------------------------------------
