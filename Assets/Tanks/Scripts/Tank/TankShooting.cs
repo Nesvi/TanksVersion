@@ -24,7 +24,7 @@ namespace Complete
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
-
+        private Timer fireRate = new Timer(1.0f);
 
         private void OnEnable()
         {
@@ -34,25 +34,88 @@ namespace Complete
         }
 
 
-        private void Start ()
+        private void Start()
         {
             // The fire axis is based on the player number.
             m_FireButton = "Fire" + m_PlayerNumber;
 
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+
+            m_Fired = true;
+
+            m_TankAI = GetComponent<TankAI>();
+            if (m_TankAI != null)
+            {
+                isAI = true;
+            }
         }
 
 
-        private void Update ()
+        private void Update()
         {
-            if (isAI)
+            if (fireRate.Check())
             {
-                
+                if (isAI)
+                {
+                    AIInput();
+                }
+                else
+                {
+                    ManageInput();
+                }
             }
-            else
+        }
+
+        private void AITrain()
+        {
+
+            AIInput();
+        }
+
+        private void AIInput()
+        {
+
+            // The slider should have a default value of the minimum launch force.
+            m_AimSlider.value = m_MinLaunchForce;
+
+            // If the max force has been exceeded and the shell hasn't yet been launched...
+            if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
             {
-                ManageInput();
+                // ... use the max force and launch the shell.
+                m_CurrentLaunchForce = m_MaxLaunchForce;
+                Fire();
+            }
+            //If it's close to target strength
+            else if (m_TankAI.wantToShoot && m_CurrentLaunchForce >= m_TankAI.targetShootPower && !m_Fired)
+            {
+                // ... launch the shell.
+                Fire();
+            }
+            // Otherwise, if the fire button has just started being pressed...
+            else if (m_TankAI.wantToShoot && m_Fired)
+            {
+                // ... reset the fired flag and reset the launch force.
+                m_Fired = false;
+                m_CurrentLaunchForce = m_MinLaunchForce;
+
+                // Change the clip to the charging clip and start it playing.
+                m_ShootingAudio.clip = m_ChargingClip;
+                m_ShootingAudio.Play();
+            }
+            // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
+            else if (m_TankAI.wantToShoot && !m_Fired)
+            {
+                // Increment the launch force and update the slider.
+                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
+
+                m_AimSlider.value = m_CurrentLaunchForce;
+            }
+            // Otherwise, if the fire button is released and the shell hasn't been launched yet...
+            else if (!m_TankAI.wantToShoot && !m_Fired)
+            {
+                // ... launch the shell.
+                Fire();
             }
         }
 
@@ -95,24 +158,55 @@ namespace Complete
             }
         }
 
-        private void Fire ()
+        private void Fire()
         {
+            fireRate.Reset();
+
             // Set the fired flag so only Fire is only called once.
             m_Fired = true;
 
             // Create an instance of the shell and store a reference to it's rigidbody.
             Rigidbody shellInstance =
-                Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+                Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
 
             // Set the shell's velocity to the launch force in the fire position's forward direction.
-            shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; 
+            shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
             // Change the clip to the firing clip and play it.
             m_ShootingAudio.clip = m_FireClip;
-            m_ShootingAudio.Play ();
+            m_ShootingAudio.Play();
 
             // Reset the launch force.  This is a precaution in case of missing button events.
             m_CurrentLaunchForce = m_MinLaunchForce;
+        }
+
+        public void TrainingFire(float power)
+        {
+            if (m_TankAI.trainShootingAI)
+            {
+                m_CurrentLaunchForce = power;
+
+                // Set the fired flag so only Fire is only called once.
+                m_Fired = true;
+
+                // Create an instance of the shell and store a reference to it's rigidbody.
+                Rigidbody shellInstance =
+                    Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+
+                // Set the shell's velocity to the launch force in the fire position's forward direction.
+                shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+
+                ShellExplosion shell = shellInstance.GetComponent<ShellExplosion>();
+                shell.shootPower = power;
+
+                // Change the clip to the firing clip and play it.
+                m_ShootingAudio.clip = m_FireClip;
+                m_ShootingAudio.Play();
+
+                // Reset the launch force.  This is a precaution in case of missing button events.
+                m_CurrentLaunchForce = m_MinLaunchForce;
+
+            }
         }
     }
 }

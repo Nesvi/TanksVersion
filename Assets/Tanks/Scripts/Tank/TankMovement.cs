@@ -96,7 +96,7 @@ namespace Complete
         {
 
             m_MovementInputValue = ProcessAxis(m_TankAI.m_MovementInputValue, m_MovementInputValue, 3.0f, 6.0f);
-            m_TurnInputValue = ProcessAxis(m_TankAI.m_TurnInputValue, m_TurnInputValue, 5.0f, 8.0f);
+            m_TurnInputValue = m_TankAI.m_TurnInputValue;// ProcessAxis(m_TankAI.m_TurnInputValue, m_TurnInputValue, 5.0f, 8.0f);
         }
 
         private void ManageInput()
