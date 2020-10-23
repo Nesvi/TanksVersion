@@ -14,4 +14,5 @@
 -Surround the tank with a barrier that way the other player can't escape for a few seconds
 -Glue
 -Wall in front of the tank
+-Following mines
 -----------------------------------------------------------------------------------------------

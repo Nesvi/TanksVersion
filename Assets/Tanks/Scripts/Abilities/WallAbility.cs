@@ -38,10 +38,10 @@ public class WallAbility : Ability
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            Use();
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftControl))
+        //{
+        //    Use();
+        //}
 
         if (destroySpawnedTimer.CheckOneTimeEvent())
             currentSpawned.SetActive(false);

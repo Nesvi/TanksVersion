@@ -71,8 +71,6 @@ public class ScaleYWithCurve : MonoBehaviour
             transform.localScale = Vector3.Lerp(targetScale, initialScale, curve.Evaluate(progress) );
         else
             transform.localScale = Vector3.Lerp(initialScale, targetScale, curve.Evaluate(progress) );
-
-        Debug.Log(curve.Evaluate(progress));
     }
 
 }

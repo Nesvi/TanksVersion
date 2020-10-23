@@ -13,7 +13,7 @@ public class Ability : MonoBehaviour
             AbilityEnd();
     }
 
-    protected void Use()
+    public void Use()
     {
         AbilityStart();
     }

@@ -22,6 +22,7 @@ namespace Complete
 
         private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
         private TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
+        private TankAbility m_Ability;
         private TankAI m_TankAI;                                // Reference to tank's AI script
         private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
 
@@ -31,14 +32,14 @@ namespace Complete
             // Get references to the components.
             m_Movement = m_Instance.GetComponent<TankMovement> ();
             m_Shooting = m_Instance.GetComponent<TankShooting> ();
-
+            m_Ability = m_Instance.GetComponent<TankAbility>();
 
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas> ().gameObject;
 
             // Set the player numbers to be consistent across the scripts.
             m_Movement.m_PlayerNumber = m_PlayerNumber;
             m_Shooting.m_PlayerNumber = m_PlayerNumber;
-
+            m_Ability.playerIndex = m_PlayerNumber;
             // Setup the AI
 
             if (isAI)
