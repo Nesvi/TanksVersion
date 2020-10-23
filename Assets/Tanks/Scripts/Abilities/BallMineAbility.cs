@@ -30,7 +30,7 @@ public class BallMineAbility : Ability
             if (ballMaterial == null)
                 ballMaterial = currentSpawned[i].GetComponent<MeshRenderer>().material;
 
-            currentSpawned[i].GetComponent<MeshRenderer>().sharedMaterial = ballMaterial;
+            currentSpawned[i].GetComponent<MeshRenderer>().material = ballMaterial;
         }
     }
     protected override void AbilityStart()

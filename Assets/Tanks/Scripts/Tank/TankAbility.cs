@@ -27,7 +27,7 @@ public class TankAbility : MonoBehaviour
         }
 
         cooldownBetweenAbilities = new Timer();
-        cooldownBetweenAbilities.Reset(6.0f);
+        cooldownBetweenAbilities.Reset(8.0f);
 
         ChooseRandomAbility();
     }
