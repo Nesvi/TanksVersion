@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 
-public class ScaleYWithCurve : MonoBehaviour
+public class ScaleWithCurve : MonoBehaviour
 {
     public AnimationCurve curve;
-    public float targetY = 1.0f;
+    public Vector3 targetScale = Vector3.one;
     public float duration;
 
     private float timeStart;
     private Vector3 initialScale;
-    private Vector3 targetScale;
     private bool inverted;
 
     public bool playOnAwake;
@@ -33,8 +32,8 @@ public class ScaleYWithCurve : MonoBehaviour
         //initialScale.y = 0.0f;
         //transform.localScale = initialScale;
 
-        targetScale = transform.localScale;
-        targetScale.y = targetY;
+        //targetScale = transform.localScale;
+        //targetScale.y = targetScale;
 
     }
 

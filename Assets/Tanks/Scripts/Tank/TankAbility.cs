@@ -20,7 +20,10 @@ public class TankAbility : MonoBehaviour
 
         for(int i = 0; i < abilitiesParent.childCount; i++)
         {
-            abilities.Add(abilitiesParent.GetChild(0).GetComponent<Ability>());
+            if (abilitiesParent.GetChild(i).gameObject.activeSelf)
+            {
+                abilities.Add(abilitiesParent.GetChild(i).GetComponent<Ability>());
+            }
         }
 
         cooldownBetweenAbilities = new Timer();
@@ -65,7 +68,7 @@ public class TankAbility : MonoBehaviour
         int candidate;
         for (int i = 0; i < 10; i++)
         {
-            candidate = Random.Range(0, abilities.Count - 1);
+            candidate = Random.Range(0, abilities.Count);
             if (candidate != currentAbility)
             {
                 currentAbility = candidate;

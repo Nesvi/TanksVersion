@@ -24,24 +24,19 @@ public class WallAbility : Ability
         currentSpawned.transform.position = spawnTransform.position;
         currentSpawned.transform.rotation = spawnTransform.rotation;
 
-        currentSpawned.GetComponent<ScaleYWithCurve>().StartAnimation();
+        currentSpawned.GetComponent<ScaleWithCurve>().StartAnimation();
     }
 
     protected override void AbilityEnd()
     {
         base.AbilityEnd();
-        currentSpawned.GetComponent<ScaleYWithCurve>().StartAnimationInverted();
+        currentSpawned.GetComponent<ScaleWithCurve>().StartAnimationInverted();
         destroySpawnedTimer.Reset(0.7f);
     }
 
     protected override void Update()
     {
         base.Update();
-
-        //if (Input.GetKeyDown(KeyCode.LeftControl))
-        //{
-        //    Use();
-        //}
 
         if (destroySpawnedTimer.CheckOneTimeEvent())
             currentSpawned.SetActive(false);

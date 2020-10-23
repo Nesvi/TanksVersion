@@ -11,6 +11,7 @@ namespace Complete
         public float m_ExplosionForce = 1000f;              // The amount of force added to a tank at the centre of the explosion.
         public float m_MaxLifeTime = 2f;                    // The time in seconds before the shell is removed.
         public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
+        public bool useCollision = true;
 
         [HideInInspector]
         public float shootPower;
@@ -23,6 +24,17 @@ namespace Complete
 
 
         private void OnTriggerEnter(Collider other)
+        {
+            if (useCollision)
+            {
+                Explode();
+
+                // Destroy the shell.
+                Destroy(gameObject);
+            }
+        }
+
+        public void Explode()
         {
             // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
             Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
@@ -65,15 +77,11 @@ namespace Complete
 
             // Once the particles have finished, destroy the gameobject they are on.
             ParticleSystem.MainModule mainModule = m_ExplosionParticles.main;
-            Destroy(m_ExplosionParticles.gameObject, mainModule.duration);
+            //Destroy(m_ExplosionParticles.gameObject, mainModule.duration);
 
             if (TankAI.instance.trainShootingAI)
                 TankAI.instance.StoreResults(transform.position, shootPower);
-
-            // Destroy the shell.
-            Destroy(gameObject);
         }
-
 
         private float CalculateDamage(Vector3 targetPosition)
         {
