@@ -12,7 +12,7 @@ public class BallMineAbility : Ability
     private GameObject[] currentSpawned;
     private Rigidbody[] spawnedRigidbody;
     private ShellExplosion explosion;
-    private Material ballMaterial;
+    private Material ballMaterial = null;
 
     private bool pendingImpulse;
     const int numberOfInstances = 8;
@@ -30,7 +30,7 @@ public class BallMineAbility : Ability
             if (ballMaterial == null)
                 ballMaterial = currentSpawned[i].GetComponent<MeshRenderer>().material;
 
-            currentSpawned[i].GetComponent<MeshRenderer>().material = ballMaterial;
+            currentSpawned[i].GetComponent<MeshRenderer>().sharedMaterial = ballMaterial;
         }
     }
     protected override void AbilityStart()
@@ -100,7 +100,7 @@ public class BallMineAbility : Ability
             float progress = duration.GetProgress01();
             progress *= progress;
 
-            Color emission = Color.red * (Mathf.Sin(progress * 100.0f) * 0.5f + 0.5f);
+            Color emission = Color.red * (Mathf.Sin(progress * 100.0f) * 0.5f + 0.5f) * progress * 10.0f;
             ballMaterial.SetColor("_EmissionColor", emission);
         }
     }
