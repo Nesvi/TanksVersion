@@ -14,6 +14,12 @@ public class MagnetAbility : Ability
         FX.gameObject.SetActive(false);
     }
 
+    public override void ResetAbility()
+    {
+        base.ResetAbility();
+        FX.gameObject.SetActive(false);
+    }
+
     protected override void AbilityStart()
     {
         base.AbilityStart();

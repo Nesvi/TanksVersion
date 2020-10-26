@@ -119,8 +119,6 @@ namespace Complete
 
         private void Shoot(bool tryToShoot, float distance)
         {
-            wantToShoot = false;
-            return;
             if (tryToShoot)
             {
                 wantToShoot = true;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosiveSpearAbility : Ability
+public class ExplosiveSpearAbility : Ability, ITipCallback
 {
     public GameObject spear;
     public SpearTip spearTip;
@@ -43,7 +43,7 @@ public class ExplosiveSpearAbility : Ability
         }
     }
 
-    public void TipCollided(GameObject playerGameObject)
+    public void TipCollided(GameObject playerGameObject, GameObject blade)
     {
         spear.transform.parent = playerGameObject.transform;
         spear.transform.position = spear.transform.position + spear.transform.forward * 0.5f;
@@ -86,5 +86,11 @@ public class ExplosiveSpearAbility : Ability
 
             Instantiate(explosiveShell, spawnPos, Quaternion.identity);
         }
+    }
+
+    public override void ResetAbility()
+    {
+        base.ResetAbility();
+        HideSpear();
     }
 }

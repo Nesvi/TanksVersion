@@ -38,4 +38,9 @@ public class Ability : MonoBehaviour
     {
         return checkDuration && !duration.Check();
     }
+
+    public virtual void ResetAbility()
+    {
+        
+    }
 }

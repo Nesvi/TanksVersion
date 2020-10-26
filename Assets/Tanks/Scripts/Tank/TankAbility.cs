@@ -93,4 +93,12 @@ public class TankAbility : MonoBehaviour
             }
         }
     }
+
+    private void OnEnable()
+    {
+        for(int i = 0; i < abilities.Count; i++)
+        {
+            abilities[i].ResetAbility();
+        }
+    }
 }

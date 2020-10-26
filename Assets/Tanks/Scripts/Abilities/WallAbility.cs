@@ -42,4 +42,10 @@ public class WallAbility : Ability
             currentSpawned.SetActive(false);
     }
 
+    public override void ResetAbility()
+    {
+        base.ResetAbility();
+        currentSpawned.SetActive(false);
+    }
+
 }

@@ -33,6 +33,15 @@ public class BallMineAbility : Ability
             currentSpawned[i].GetComponent<MeshRenderer>().material = ballMaterial;
         }
     }
+
+    public override void ResetAbility()
+    {
+        base.ResetAbility();
+        for (int i = 0; i < numberOfInstances; i++)
+        {
+            currentSpawned[i].SetActive(false);
+        }
+    }
     protected override void AbilityStart()
     {
         base.AbilityStart();
@@ -80,13 +89,16 @@ public class BallMineAbility : Ability
         base.AbilityEnd();
         for (int i = 0; i < numberOfInstances; i++)
         {
-            Vector3 spawnPos = currentSpawned[i].transform.position;
-            spawnPos.y = 0.0f;
+            if (currentSpawned[i].activeSelf)
+            {
+                Vector3 spawnPos = currentSpawned[i].transform.position;
+                spawnPos.y = 0.0f;
 
-            Instantiate(shellExplosion, spawnPos, Quaternion.identity);
+                Instantiate(shellExplosion, spawnPos, Quaternion.identity);
 
-            currentSpawned[i].GetComponent<ScaleWithCurve>().enabled = false;
-            currentSpawned[i].transform.localScale = Vector3.zero;
+                currentSpawned[i].GetComponent<ScaleWithCurve>().enabled = false;
+                currentSpawned[i].transform.localScale = Vector3.zero;
+            }
         }
 
     }
