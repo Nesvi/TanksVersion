@@ -33,4 +33,9 @@ public class Ability : MonoBehaviour
         duration.Reset(time);
         checkDuration = true;
     }
+
+    protected bool IsAbilityActive()
+    {
+        return checkDuration && !duration.Check();
+    }
 }
