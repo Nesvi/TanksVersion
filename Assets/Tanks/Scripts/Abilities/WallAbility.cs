@@ -9,12 +9,15 @@ public class WallAbility : Ability
 
     private GameObject currentSpawned;
     private Timer destroySpawnedTimer = new Timer();
+    private AudioSource audio;
 
     private void Awake()
     {
         currentSpawned = Instantiate(Wall, spawnTransform.position, spawnTransform.rotation);
         currentSpawned.SetActive(false);
+        audio = GetComponent<AudioSource>();
     }
+
     protected override void AbilityStart()
     {
         base.AbilityStart();
@@ -25,6 +28,7 @@ public class WallAbility : Ability
         currentSpawned.transform.rotation = spawnTransform.rotation;
 
         currentSpawned.GetComponent<ScaleWithCurve>().StartAnimation();
+        audio.Play();
     }
 
     protected override void AbilityEnd()

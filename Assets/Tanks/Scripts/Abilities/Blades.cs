@@ -15,7 +15,8 @@ public class Blades : Ability, ITipCallback
 
     private List<Transform> blades;
     private List<PendingImpulse> pendingImpulses;
-    
+    private AudioSource audio;
+
     private void Awake()
     {
         pendingImpulses = new List<PendingImpulse>();
@@ -25,6 +26,8 @@ public class Blades : Ability, ITipCallback
         {
             blades.Add(transform.GetChild(i));
         }
+
+        audio = GetComponent<AudioSource>();
 
         ResetAbility();
     }
@@ -83,6 +86,7 @@ public class Blades : Ability, ITipCallback
         Destroy(fx, 2.0f);
 
         playerGameObject.GetComponent<TankHealth>().TakeDamage(50.0f);
+        audio.Play();
 
     }
 
