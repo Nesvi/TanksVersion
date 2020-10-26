@@ -53,13 +53,13 @@ public class TankAbility : MonoBehaviour
             switch (playerIndex)
             {
                 case 1:
-                    if (Input.GetKeyDown(KeyCode.F))
+                    if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton1))
                     {
                         TriggerAbility();
                     }
                     break;
                 case 2:
-                    if (Input.GetKeyDown(KeyCode.RightControl))
+                    if (Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.Joystick1Button1))
                     {
                         TriggerAbility();
                     }
