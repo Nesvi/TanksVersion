@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,10 @@ public class TankAbility : MonoBehaviour
     private int currentAbility = -1;
     public int playerIndex;
     public Timer cooldownBetweenAbilities;
+
+    public TextMeshPro abilityText;
+
+    private Transform cameraTransform;
 
     private void Start()
     {
@@ -29,11 +34,20 @@ public class TankAbility : MonoBehaviour
         cooldownBetweenAbilities = new Timer();
         cooldownBetweenAbilities.Reset(8.0f);
 
+        cameraTransform = Camera.main.transform;
+
+        abilityText.text = "";
+
         ChooseRandomAbility();
     }
 
     public void Update()
     {
+        if (cooldownBetweenAbilities.CheckOneTimeEvent())
+        {
+            abilityText.text = abilities[currentAbility].gameObject.name;
+        }
+
         if (cooldownBetweenAbilities.Check())
         {
             switch (playerIndex)
@@ -54,10 +68,13 @@ public class TankAbility : MonoBehaviour
         }
 
         cooldownBar.value = cooldownBetweenAbilities.GetProgress01() * 100.0f;
+
+        abilityText.transform.rotation = cameraTransform.rotation;
     }
 
     public void TriggerAbility()
     {
+        abilityText.text = "";
         abilities[currentAbility].Use();
         ChooseRandomAbility();
         cooldownBetweenAbilities.Reset();
