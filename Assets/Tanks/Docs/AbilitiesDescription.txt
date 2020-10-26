@@ -1,0 +1,25 @@
+------------------------------------------------------------------------------------------------
+---EXPLOSIVE BALLS
+---  A circle of 8 explosive spheres that bounce with the environment. 
+---They explode in 3 seconds so other players need to move quickly to avoid them.
+---There's feedback about when the explosion is going to start, the red blinking light. 
+---
+---BARRIER
+---A barrier that players can use to block paths or stop bullets from their front side. 
+---They need to aim to the direction they want to protect
+---
+---BARREL
+---An explosive barrel with two spears that you can use to stick it to other players. 
+---When it's stick there're a few seconds before the explosion start. The victim's tank can 
+---chase the attacker tank to make him explode too.
+---This is my favourite one because it has a lot of posibilities and I believe it's fun.
+---The key elements for this game are chasing, driving and position based abilities IMHO.
+---
+---BLADES 
+---Two blades appear on the tank sides. The player has 7 seconds to try to hit other tanks with
+---the blades. They deal 50 points of damage. This ability promotes chasing & fly behaviours.
+---
+---Magnet
+---When the player activates it a respulsion force affects other tanks. It's useful to try to 
+---stick them to a wall or getting distance with your attackers.
+------------------------------------------------------------------------------------------------
